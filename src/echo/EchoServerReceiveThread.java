@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class EchoServerReceiveThread extends Thread {
 	private Socket socket;
@@ -18,7 +19,6 @@ public class EchoServerReceiveThread extends Thread {
 	@Override
 	public void run() {
 		try {
-			
 			//4. 연결 성공
 			InetSocketAddress remoteSocketAddress =
 				(InetSocketAddress)socket.getRemoteSocketAddress();
@@ -46,8 +46,19 @@ public class EchoServerReceiveThread extends Thread {
 				pw.println( message );
 				//pw.print( message + "\n" );
 			}
-		} catch ( IOException e ) {
+		} catch( SocketException e ) {
+			System.out.println( "[서버]연결 끊어짐(클라이언트가 비정상적 종료)" );
+		} catch( IOException e ) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if( socket != null &&
+					socket.isClosed() == false ) {
+					socket.close();
+				}
+			} catch ( IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

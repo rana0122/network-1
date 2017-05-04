@@ -50,6 +50,7 @@ public class EchoClient {
 		} catch( IOException e ) {
 			e.printStackTrace();
 		} finally {
+			scanner.close();
 			try {
 				if( socket != null && socket.isClosed() == false ){
 					socket.close();
