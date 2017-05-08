@@ -12,6 +12,7 @@ public class ChatClientReceiveThread extends Thread {
 	@Override
 	public void run() {
 		try {
+			
 			while( true ) {
 				String data = bufferedReader.readLine();
 				if( data == null ) {
